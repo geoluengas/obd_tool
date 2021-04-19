@@ -10,13 +10,11 @@ from obd.utils import BitArray
 def main():
     time.strftime('%X %x %Z')
     # obd.logger.setLevel(obd.logging.DEBUG)
-    connection = obd.OBD("/dev/ttys002")  # auto-connects to USB or RF port
-    # cmds = {obd.commands.SPEED}
-    # cmds = connection.supported_commands
+    connection = obd.OBD("/dev/ttys001")  # auto-connects to USB or RF port
     reader = DataReader(connection)
-    t1 = threading.Thread(target=reader.read_cmds, args=(999, 1, True, 0.05))
-    t1.start()
-    t1.join()
+    # t1 = threading.Thread(target=reader.read_cmds, args=(999, 1, True, 0.05))
+    # t1.start()
+    reader.read_cmds(5, 1, False, 1)
 
 
 class DataReader():
@@ -53,6 +51,12 @@ class DataReader():
             response = self.connection.query(cmd)  # send the command, and parse the response
             value = "unknown"
             units = "unkown"
+            print("### " + str(cmd.name) + ":\t" + str(response) + "\t[" + str(type(response)) + "]\t[" +
+                  str(cmd.decode) + "]")
+            if response.value is None:
+                print("NONE!!")
+                print(str(self.cmds))
+                self.cmds.remove[str(cmd.name)]
             if isinstance(response.value, str):
                 # print("STRING!")
                 value = response.value
