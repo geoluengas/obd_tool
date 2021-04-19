@@ -51,12 +51,7 @@ class DataReader():
             response = self.connection.query(cmd)  # send the command, and parse the response
             value = "unknown"
             units = "unkown"
-            print("### " + str(cmd.name) + ":\t" + str(response) + "\t[" + str(type(response)) + "]\t[" +
-                  str(cmd.decode) + "]")
-            if response.value is None:
-                print("NONE!!")
-                print(str(self.cmds))
-                self.cmds.remove[str(cmd.name)]
+
             if isinstance(response.value, str):
                 # print("STRING!")
                 value = response.value
