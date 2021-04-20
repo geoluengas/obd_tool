@@ -14,7 +14,9 @@ def main():
     reader = DataReader(connection)
     # t1 = threading.Thread(target=reader.read_cmds, args=(999, 1, True, 0.05))
     # t1.start()
-    reader.read_cmds(5, 1, False, 1)
+    print(len(reader.cmds))
+    reader.read_cmds(999, 0.1, False, 1)
+    print(len(reader.cmds))
 
 
 class DataReader():
@@ -23,6 +25,7 @@ class DataReader():
             print(c.name)
         self.connection = connection
         self.cmds = connection.supported_commands
+        self.null_response_cmds = []
         self.f_dir = f_dir
         self.f_extension = f_extension
         self.clean_files()
@@ -49,9 +52,11 @@ class DataReader():
     def read_cmd(self, cmd, randomize=False, rand_perc=0.1):
         if self.connection.is_connected():
             response = self.connection.query(cmd)  # send the command, and parse the response
+            #print(response)
             value = "unknown"
             units = "unkown"
 
+            #print(len(self.null_response_cmds))
             if isinstance(response.value, str):
                 # print("STRING!")
                 value = response.value
@@ -71,23 +76,23 @@ class DataReader():
                     value = int(value)
                     value = random.randint(int(value - (value * rand_perc)), int(value + (value * rand_perc)))
                 units = response.value.units
-            r_response = {'value': value, 'units': units, 'command': response.command}
-            # print(r_response)
+                # print(r_response)
             f_name = str(response.command.name + "." + self.f_extension)
             f_name = self.f_dir + f_name
             # print(f_name)
             self.write_file(f_name, value)
-            return r_response
+            return response
         else:
             print("No connection to " + str(self.connection))
 
     def read_cmds(self, iterations=999, interval=1, randomize=False, rand_perc=0.05):
         i = 0
         while i < iterations and self.connection.is_connected():
-            # print("Run : " + str(i))
+            #print("Run : " + str(i))
             for cmd in self.cmds:
                 # print("CMD " + cmd.name)
                 self.read_cmd(cmd, randomize, rand_perc)
+
             i += 1
             time.sleep(interval)
 

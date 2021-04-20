@@ -7,10 +7,6 @@ from os import path
 
 
 def main():
-    print("live_plot.py main")
-    #    live_plot1 = LivePlot(obd.commands.RPM, 50)
-    #   live_plot2 = LivePlot(obd.commands.SPEED, 50)
-    #    live_plot3 = LivePlot(samples=50)
     lp = LivePlot(['SPEED', 'RPM', 'MAF'], 50)
     plt.show()
 

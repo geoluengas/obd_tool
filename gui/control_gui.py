@@ -86,7 +86,7 @@ def connect(port, cmds_listbox):
         cmds.append(cmd.name)
     cmds.sort()
     update_cmds_list(cmds, cmds_listbox)
-    print(cmds)
+    #print(cmds)
     return cmds
 
 
@@ -98,7 +98,7 @@ def update_cmds_list(cmds, cmds_listbox):
 
 
 def graph(cmds, samples, running_average):
-    print(str(cmds))
+    #print(str(cmds))
     plt.close()
     ld = pd.LivePlot(cmds, samples=samples, running_average=running_average)
     plt.show()
@@ -107,7 +107,7 @@ def graph(cmds, samples, running_average):
 def get_selected_item(listbox):
     items = []
     for item in listbox.curselection():
-        print(listbox.get(item))
+        #print(listbox.get(item))
         items.append(listbox.get(item))
     return items
 
